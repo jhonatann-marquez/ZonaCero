@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+# Nivel 3: Enum de estados y tabla constante de ruido (en metros)
+enum Estado { QUIETO, CAMINAR, CORRER, AIRE }
+const RUIDO = [0.0, 2.0, 6.0, 0.0]
+
 @export var camara: Camera3D
 @export var speed_caminar = 2.5
 @export var speed_correr = 5.0
@@ -11,11 +15,15 @@ var multiplicador = 1.0
 var empuje = Vector3.ZERO
 var accion = ""
 
-var avance = Vector3.ZERO # La parte de la velocidad que dan las teclas
+var avance = Vector3.ZERO
+var estado = Estado.QUIETO
+var ruido = 0.0
+
 
 func _ready():
 	if camara == null:
 		camara = get_viewport().get_camera_3d()
+
 
 func _physics_process(delta):
 	velocity += get_gravity() * delta
@@ -29,7 +37,6 @@ func _physics_process(delta):
 	var corre = Input.is_action_pressed("correr")
 	var speed = speed_correr if corre else speed_caminar
 
-	# Nivel 2: Arranque y frenado progresivo con move_toward
 	var objetivo = direction * speed * multiplicador
 	var paso = (speed / tiempo_arranque) * delta
 	avance = avance.move_toward(objetivo, paso)
@@ -40,24 +47,48 @@ func _physics_process(delta):
 	if direction.length() > 0:
 		basis = Basis.looking_at(direction)
 
-	if accion != "":
-		anim.play(accion)
-	elif avance.length() > speed_caminar + 0.1:
-		anim.play("sprint")
-	elif avance.length() > 0.1:
-		anim.play("walk")
-	else:
-		anim.play("idle")
-
 	move_and_slide()
+
+	# Nivel 3: Máquina de estados y actualización de ruido
+	var antes = estado
+	estado = elegir_estado()
+	ruido = RUIDO[estado]
+
+	if estado != antes:
+		print("[estado] ", Estado.keys()[estado], " | ruido: ", ruido, " m")
+
+	animar()
 	_prueba()
 
 
+func elegir_estado():
+	if not is_on_floor():
+		return Estado.AIRE
+	var rapidez = Vector2(velocity.x, velocity.z).length()
+	if rapidez < 0.1:
+		return Estado.QUIETO
+	if rapidez > speed_caminar + 0.1:
+		return Estado.CORRER
+	return Estado.CAMINAR
+
+
+func animar():
+	if accion != "":
+		anim.play(accion)
+		return
+	match estado:
+		Estado.QUIETO:
+			anim.play("idle")
+		Estado.CAMINAR:
+			anim.play("walk")
+		Estado.CORRER:
+			anim.play("sprint")
+		Estado.AIRE:
+			anim.play("fall")
+
+
 # ---------------------------------------------------------------------------
-# PRUEBAS AUTOMÁTICAS. No hace falta entender esta parte: en el Inspector del
-# Personaje elijan "Prueba" (y, si la prueba usa una acción, escriban su nombre
-# en "Accion Prueba"). Con F5 el personaje se mueve solo y escribe los números
-# en el panel Output. La última línea de _physics_process() es _prueba().
+# PRUEBAS AUTOMÁTICAS.
 # ---------------------------------------------------------------------------
 @export_enum("Ninguna", "Avanzar 60 cuadros", "Avanzar 60 y soltar", "Avanzar y la acción desde el cuadro 30", "Mantener la acción 2 s", "Avanzar con la acción 60 cuadros", "Diagonal W+D 60 cuadros") var prueba = 0
 @export var accion_prueba = ""
@@ -123,7 +154,6 @@ func _resumen():
 	return t
 
 
-# Escribe el cuadro exacto en el que cambia cualquier variable "estado".
 var _antes = {}
 
 
