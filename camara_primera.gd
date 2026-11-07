@@ -2,12 +2,24 @@ extends Camera3D
 
 @export var objetivo: Node3D
 @export var altura_ojos = 1.6
+@export var sensibilidad = 0.003
 
 func _ready():
 	top_level = true
-	rotation = Vector3.ZERO  # Empieza mirando al frente (-Z)
+	rotation = Vector3.ZERO  # empieza mirando al frente (-Z)
 	if objetivo and objetivo.has_node("Modelo"):
-		objetivo.get_node("Modelo").visible = false  # Esconde el modelo para que no tape la vista
+		objetivo.get_node("Modelo").visible = false  # oculta el modelo
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED  # atrapa el puntero del mouse
+
+func _unhandled_input(evento):
+	if evento.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE  # ESC libera el ratón
+		
+	var capturado = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+	if evento is InputEventMouseMotion and capturado:
+		rotation.y -= evento.relative.x * sensibilidad
+		rotation.x -= evento.relative.y * sensibilidad
+		rotation.x = clamp(rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
 func _physics_process(delta):
 	if objetivo:
