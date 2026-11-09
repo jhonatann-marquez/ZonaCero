@@ -1,10 +1,12 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1794257815
+::res://::1794261460
 camara_primera.gd::GDScript::3038040975172417181::1794034203::0::1::::<>Camera3D<><>0<>0<><>::
+ciclo_dia.gd::GDScript::6750070474053311798::1794258594::0::1::::CicloDia<>Node<><>0<>0<><>::
 icon.svg::CompressedTexture2D::1082983283144382342::1794022485::1794027101::1::::<><><>0<>0<>63892c2e5cd9b06ae62449f83b4855f0<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 LEEME.txt::TextFile::-1::1794025334::0::1::::<><><>0<>0<><>::
-main.tscn::PackedScene::548826836251267576::1794034531::0::1::::<><><>0<>0<><>::uid://bjjwddgttjntl::::res://camara_primera.gd<>uid://cchv43eug6720::::res://personaje.gd<>uid://bkmexfnojlmxi::::res://personaje/character-male-a.glb
+main.tscn::PackedScene::548826836251267576::1794259852::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://sistema_sol.gd<>uid://bjjwddgttjntl::::res://camara_primera.gd<>uid://cchv43eug6720::::res://personaje.gd<>uid://bkmexfnojlmxi::::res://personaje/character-male-a.glb<>uid://c3f1w6y7ay111::::res://ciclo_dia.gd
 personaje.gd::GDScript::4928998021563027591::1794029307::0::1::::<>CharacterBody3D<><>0<>0<><>::
+sistema_sol.gd::GDScript::6527060181489791687::1794259734::0::1::::<>Node3D<><>0<>0<><>::
 ::res://personaje/::1794027103
 character-female-b.glb::PackedScene::8970474359897470931::1794022485::1794027103::1::::<><><>0<>0<>31e275a2532a586c20b1969b0a36830a<>res://.godot/imported/character-female-b.glb-503cd04c05c31313ea8932489876b749.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png
 character-female-e.glb::PackedScene::5967598437573518196::1794022485::1794027103::1::::<><><>0<>0<>6c34d32525302dc828bd724457fe2a55<>res://.godot/imported/character-female-e.glb-3362fbfb1a076431870b833efb897333.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png

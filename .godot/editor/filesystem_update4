@@ -1,3 +1,4 @@
 res://main.tscn
-res://ciclo_dia.gd
+res://onda.gd
+res://material_mundo.gdshader
 res://sistema_sol.gd
