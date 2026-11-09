@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://h24dlci7t2hg"]
 
+[ext_resource type="Script" uid="uid://cy80y0cs687eh" path="res://sistema_sol.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://bjjwddgttjntl" path="res://camara_primera.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_pj"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
+[ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://ciclo_dia.gd" id="5_lquwl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -30,7 +32,11 @@ albedo_color = Color(0.85, 0.55, 0.25, 1)
 radius = 0.35
 height = 1.75
 
-[node name="Main" type="Node3D" unique_id=190651866]
+[node name="Main" type="Node3D" unique_id=190651866 node_paths=PackedStringArray("sol", "entorno", "ciclo")]
+script = ExtResource("1_1bvp3")
+sol = NodePath("DirectionalLight3D")
+entorno = NodePath("WorldEnvironment")
+ciclo = NodePath("CicloDia")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=34646061]
 environment = SubResource("Entorno")
@@ -94,3 +100,6 @@ shape = SubResource("Capsula")
 
 [node name="Modelo" parent="Personaje" unique_id=764718322 instance=ExtResource("2_modelo")]
 transform = Transform3D(-2.6, 0, 0, 0, 2.6, 0, 0, 0, -2.6, 0, 0, 0)
+
+[node name="CicloDia" type="Node3D" parent="." unique_id=305185717]
+script = ExtResource("5_lquwl")
