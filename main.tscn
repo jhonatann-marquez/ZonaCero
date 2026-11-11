@@ -5,6 +5,10 @@
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_pj"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
 [ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://ciclo_dia.gd" id="5_lquwl"]
+[ext_resource type="Script" path="res://ruido.gd" id="9_ruido"]
+[ext_resource type="Script" path="res://salud.gd" id="10_salud"]
+[ext_resource type="PackedScene" path="res://zombi.tscn" id="11_zombi"]
+[ext_resource type="PackedScene" path="res://mordedor.tscn" id="12_mordedor"]
 [ext_resource type="Shader" uid="uid://d54gayp88uev" path="res://material_mundo.gdshader" id="6_7mycd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
@@ -104,11 +108,12 @@ surface_material_override/0 = SubResource("CajaMat")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=1663867023]
 shape = SubResource("CajaForma")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1426766325]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1426766325 node_paths=PackedStringArray("objetivo")]
 transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 5, 7)
 script = ExtResource("1_h2yge")
+objetivo = NodePath("../Personaje")
 
-[node name="Personaje" type="CharacterBody3D" parent="." unique_id=330423102 node_paths=PackedStringArray("camara")]
+[node name="Personaje" type="CharacterBody3D" parent="." unique_id=330423102 node_paths=PackedStringArray("camara") groups=["jugador"]]
 script = ExtResource("1_pj")
 camara = NodePath("../Camera3D")
 
@@ -125,3 +130,42 @@ script = ExtResource("5_lquwl")
 [node name="CharcoCalle" type="MeshInstance3D" parent="." unique_id=23871320]
 material_override = SubResource("ShaderMaterial_272bh")
 mesh = SubResource("PlaneMesh_qrw66")
+
+[node name="Ruido" type="Node" parent="Personaje"]
+script = ExtResource("9_ruido")
+tecla = "disparar"
+radio = 10.0
+
+[node name="Salud" type="Node" parent="Personaje"]
+script = ExtResource("10_salud")
+vida = 100
+invulnerable = 0.5
+
+[node name="Zombi1" parent="." instance=ExtResource("11_zombi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -6)
+rapidez = 1.5
+tiempo_mirar = 3.0
+radio_aviso = 5.0
+
+[node name="Zombi2" parent="." instance=ExtResource("11_zombi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -10)
+rapidez = 1.5
+tiempo_mirar = 3.0
+radio_aviso = 5.0
+
+[node name="Zombi3" parent="." instance=ExtResource("11_zombi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -10.5)
+rapidez = 1.5
+tiempo_mirar = 3.0
+radio_aviso = 5.0
+
+[node name="Mordedor" parent="." instance=ExtResource("12_mordedor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -6)
+rapidez = 1.5
+rango_ataque = 1.2
+tiempo_aviso = 0.6
+tiempo_recarga = 1.5
+alcance_golpe = 1.6
+danio = 20
+vida = 60.0
+vida_huida = 0.0
